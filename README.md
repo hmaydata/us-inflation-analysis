@@ -25,6 +25,14 @@ Data visualization and report design
 ## View Full Report
 [Click here to view the full report](./inflation_analysis.html)
 
+## Sample Visualizations
+
+### Wage Growth vs Productivity
+![Wage vs Productivity](Users/Owner/Documents/us-inflation-analysis/wage_productivity.png)
+
+### Inflation Trends
+![Inflation Trend](/Users/Owner/Documents/us-inflation-analysis/Inflation_Trend.png)
+
 ## Project Structure
 inflation_analysis.Rmd -- full analysis and code
 inflation_analysis.html -- final report
