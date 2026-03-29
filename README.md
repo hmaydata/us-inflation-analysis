@@ -5,22 +5,22 @@ This project analyzes U.S. inflation trends as of March 2026 using data from the
 The analysis is structured similarly to a professional economic brief, incorporating multiple indicators including CPI, PCE, energy prices, wages, productivity, and the yield curve.
 
 ## Key Questions
-Is inflation still elevated relative to historical trends?
-Are energy prices driving inflation?
-Is wage growth outpacing productivity (demand pressure)?
-What is the yield curve signaling about future economic conditions?
+- Is inflation still elevated relative to historical trends?
+- Are energy prices driving inflation?
+- Is wage growth outpacing productivity (demand pressure)?
+- What is the yield curve signaling about future economic conditions?
 
 ## Key Insights
-Inflation has moderated by remains above target levels
-Wage growth exceeding productivity suggests persistent demand-side pressure
-Energy prices contribute to short-term volatility but are not the primary driver
-The yield curve signals elevated recession risk
+- Inflation has moderated by remains above target levels
+- Wage growth exceeding productivity suggests persistent demand-side pressure
+- Energy prices contribute to short-term volatility but are not the primary driver
+- The yield curve signals elevated recession risk
 
 ## Tools & Skills Demonstrated
-R(tidyverse, ggplot2)
-Time-Series analysis
-Economic reasoning and storytelling
-Data visualization and report design
+- R(tidyverse, ggplot2)
+- Time-Series analysis
+- Economic reasoning and storytelling
+- Data visualization and report design
 
 ## View Full Report
 [Click here to view the full report](./inflation_analysis.html)
@@ -28,10 +28,10 @@ Data visualization and report design
 ## Sample Visualizations
 
 ### Wage Growth vs Productivity
-![Wage vs Productivity](Users/Owner/Documents/us-inflation-analysis/wage_productivity.png)
+![Wage vs Productivity](outputs/figures/wage_productivity.png)
 
 ### Inflation Trends
-![Inflation Trend](/Users/Owner/Documents/us-inflation-analysis/Inflation_Trend.png)
+![Inflation Trend](outputs/figures/Inflation_Trend.png)
 
 ## Project Structure
 inflation_analysis.Rmd -- full analysis and code
