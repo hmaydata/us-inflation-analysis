@@ -34,9 +34,9 @@ The analysis is structured similarly to a professional economic brief, incorpora
 ![Inflation Trend](outputs/figures/Inflation_Trend.png)
 
 ## Project Structure
-inflation_analysis.Rmd -- full analysis and code
-inflation_analysis.html -- final report
-outputs/figures/ -- visualizations
+- inflation_analysis.Rmd -- full analysis and code
+- inflation_analysis.html -- final report
+- outputs/figures/ -- visualizations
 
 ## Why this Project Matters
 This project demondstrates the ability to combine data analysis with economic intuition to produce insights similar to professional research reports (e.g., Federal Reserve-style analysis).
