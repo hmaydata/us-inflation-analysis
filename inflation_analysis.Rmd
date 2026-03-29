@@ -8,9 +8,6 @@ output:
     toc_depth: 2
     theme: cosmo
     number_sections: true
-  pdf_document:
-    toc: true
-    toc_depth: '2'
 ---
 
 ```{r}
@@ -75,7 +72,7 @@ ggplot(dat_inf, aes(date, value, color = series)) +
   scale_color_manual(values = c("CPI"="black","Core CPI"="red","PCE"="darkblue","Core PCE"="lightblue")) +
   labs(title="Inflation Has Moderated but Remains Elevated",
        subtitle="Core inflation continues to show persistent underlying pressure",
-       y="12-Month % Change", x="", color="") +
+       y="12-Month % Change", x="", color="",caption = "Source: BLS via FRED®") +
   scale_x_date(date_breaks="6 months", date_labels="%b %Y", expand = expansion(mult = c(0.02,0.05))) +
   theme_minimal() +
   theme(legend.position="top")
@@ -98,7 +95,7 @@ ggplot(df_oil, aes(date, value)) +
   geom_hline(yintercept = mean(df_oil$value, na.rm=TRUE), linetype="dashed", color="grey50") +
   labs(title="Oil Prices Remain Volatile",
        subtitle="Energy contributes to short-term inflation fluctuations",
-       y="Price ($)", x="") +
+       y="Price ($)", x="", caption = "Source: BLS via FRED®") +
   scale_x_date(date_breaks="6 months", date_labels="%b %Y", expand = expansion(mult = c(0.02,0.05))) +
   theme_minimal()
 
@@ -185,7 +182,7 @@ ggplot(df_yield, aes(date,value)) +
   geom_hline(yintercept=0,color="black") +
   labs(title="Yield Curve Inversion Signals Slowing Growth",
        subtitle="Negative spread reflects expectations of moderating inflation",
-       y="10Y - 3M Spread", x="") +
+       y="10Y - 3M Spread", x="", caption = "Source: BLS via FRED®") +
   scale_x_date(date_breaks="6 months", date_labels="%b %Y", expand = expansion(mult = c(0.02, 0.05))) +
   theme_minimal()
 
