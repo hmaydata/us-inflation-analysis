@@ -23,7 +23,7 @@ The analysis is structured similarly to a professional economic brief, incorpora
 - Data visualization and report design
 
 ## View Full Report
-[Click here to view the full report](./inflation_analysis.html)
+[Click here to view the full report](https://hmaydata.github.io/us-inflation-analysis/)
 
 ## Sample Visualizations
 
