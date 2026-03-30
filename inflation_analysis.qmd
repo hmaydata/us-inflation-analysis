@@ -1,18 +1,21 @@
 ---
-title: "U.S. Inflation Report - March 2026"
+title: "U.S. Inflation Analysis"
 author: "Hannah May"
-date: "2026-03-28"
-output:
-  html_document:
+date: "March 2026"
+
+format: 
+  html:
     toc: true
-    toc_depth: 2
+    number-sections: true
     theme: cosmo
-    number_sections: true
+    code-fold: true
 ---
 
 ```{r}
 packages <- c("fredr", "tidyverse", "devtools", "readxl")
-lapply(packages, library, character.only = TRUE)
+suppressPackageStartupMessages({
+  invisible(lapply(packages, library, character.only = TRUE))
+})
 
 start_date <- as.Date("2021-01-01")
 
