@@ -1,4 +1,4 @@
-# U.S. Inflation Dynamics Analysis | R + FRED Data
+# U.S. Inflation Dynamics Analysis (R + FRED Data)
 ## Overview
 This project analyzes U.S. inflation trends as of March 2026 using data from the Federal Reserve Economic Data (FRED). The goal is to identify the key drivers of inflation and evaluate whether current pressures are likely to persist.
 
