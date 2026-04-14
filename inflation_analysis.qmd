@@ -12,10 +12,12 @@ format:
 ---
 
 ```{r}
-packages <- c("fredr", "tidyverse", "devtools", "readxl")
+packages <- c("fredr", "tidyverse", "devtools", "readxl", "lubridate")
 suppressPackageStartupMessages({
   invisible(lapply(packages, library, character.only = TRUE))
 })
+
+fredr_set_key(Sys.getenv("FRED_API_KEY"))
 
 start_date <- as.Date("2021-01-01")
 
@@ -88,18 +90,33 @@ ggplot(dat_inf, aes(date, value, color = series)) +
 
 ```{r}
 df_oil <- fetch_fred_data("DCOILWTICO", start_date) %>%
-  mutate(month = floor_date(date, "month")) %>%
-  group_by(month) %>%
-  summarise(value = mean(value, na.rm=TRUE)) %>%
-  rename(date = month)
+  select(date, value) %>%
+  filter(!is.na(value)) %>%
+  filter(date >= as.Date("2021-01-01"))
 
 ggplot(df_oil, aes(date, value)) +
-  geom_line(color="black", linewidth=1.2) +
-  geom_hline(yintercept = mean(df_oil$value, na.rm=TRUE), linetype="dashed", color="grey50") +
-  labs(title="Oil Prices Remain Volatile",
-       subtitle="Energy contributes to short-term inflation fluctuations",
-       y="Price ($)", x="", caption = "Source: BLS via FRED®") +
-  scale_x_date(date_breaks="6 months", date_labels="%b %Y", expand = expansion(mult = c(0.02,0.05))) +
+  geom_line(color = "black", linewidth = 1.2) +
+  
+  geom_hline(
+    yintercept = mean(df_oil$value, na.rm = TRUE),
+    linetype = "dashed",
+    color = "grey50"
+  ) +
+  
+  labs(
+    title = "Oil Prices Remain Volatile",
+    subtitle = "Energy contributes to short-term inflation fluctuations",
+    y = "Price ($)",
+    x = "",
+    caption = "Source: FRED®"
+  ) +
+  
+  scale_x_date(
+    date_breaks = "6 months",
+    date_labels = "%b %Y",
+    expand = expansion(mult = c(0.02, 0.05))
+  ) +
+  
   theme_minimal()
 
 ```
@@ -107,52 +124,56 @@ ggplot(df_oil, aes(date, value)) +
 **Energy prices remain volatile and contribute to short-term fluctuations in headline inflation.**
 
 ## Demand Pressure
+
 ```{r}
+# Fetch raw CPI and earnings data
+df_cpi_raw <- fetch_fred_data("CPIAUCSL", start_date) %>%
+  select(date, cpi = value)
+
+df_earn <- fetch_fred_data("CES0500000003", start_date) %>%
+  select(date, earnings = value)
+
 # Real wages
-df_cpi_raw <- fetch_fred_data("CPIAUCSL", start_date) %>% select(date, cpi=value)
-df_earn <- fetch_fred_data("CES0500000003", start_date) %>% select(date, earnings=value)
-
-df_rw <- merge(df_cpi_raw, df_earn, by="date") %>%
-  mutate(real_wage = earnings / cpi,
-         growth = 100 * (real_wage - lag(real_wage,12)) / lag(real_wage,12)) %>%
+df_rw <- merge(df_cpi_raw, df_earn, by = "date") %>%
+  mutate(
+    real_wage = earnings / cpi,
+    growth = 100 * (real_wage - lag(real_wage, 12)) / lag(real_wage, 12)
+  ) %>%
   filter(!is.na(growth)) %>%
-  mutate(q = floor_date(date,"quarter")) %>%
-  group_by(q) %>%
-  summarise(value = mean(growth)) %>%
-  rename(date=q) %>%
-  mutate(series="Real Wage Growth")
+  filter(month(date) %in% c(1, 4, 7, 10)) %>%
+  mutate(date = floor_date(date, "quarter")) %>%
+  select(date, value = growth) %>%
+  mutate(series = "Real Wage Growth")
 
-# Productivity
+# Productivity - values are ALREADY YoY % change, do not recompute
 df_prod <- fetch_fred_data("PRS85006091", start_date) %>%
-  select(date,value) %>%
-  mutate(value = 100 * (value - lag(value,4)) / lag(value,4)) %>%
+  select(date, value) %>%
   filter(!is.na(value)) %>%
-  mutate(series="Labor Productivity")
+  mutate(series = "Labor Productivity")
 
-#Combine datasets
+# Combine datasets
 dat_dp <- bind_rows(df_rw, df_prod) %>%
+  mutate(date = floor_date(date, "quarter")) %>%
   filter(date >= as.Date("2022-01-01"))
 
-# Alignment
-dat_diff <- dat_dp %>%
-  pivot_wider(names_from = series, values_from = value) %>%
-  arrange(date) %>%
-  mutate(diff = `Real Wage Growth` - `Labor Productivity`) %>%
-  filter(!is.na(diff))
-
 # Plot
-
-ggplot(dat_diff, aes(date, diff)) +
+ggplot(dat_dp, aes(date, value, color = series)) +
   
   geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
   
-  geom_line(color = "purple", linewidth = 1.4) +
+  geom_line(linewidth = 1.4) +
+  
+  scale_color_manual(values = c(
+    "Real Wage Growth" = "purple",
+    "Labor Productivity" = "steelblue"
+  )) +
   
   labs(
-    title = "Wage Growth Relative to Productivity",
-    subtitle = "Positive values indicate wages outpacing productivity",
+    title = "Real Wage Growth & Labor Productivity",
+    subtitle = "Year-over-year percent change",
     x = "",
-    y = "Percentage Point Difference",
+    y = "Year-over-Year % Change",
+    color = "",
     caption = "Source: BLS via FRED®"
   ) +
   
@@ -164,11 +185,11 @@ ggplot(dat_diff, aes(date, diff)) +
   
   coord_cartesian(xlim = c(as.Date("2023-01-01"), NA)) +
   
-  theme_minimal()
-
+  theme_minimal() +
+  theme(legend.position = "top")
 ```
 
-**Recent data shows real wage growth modestly exceeding productivity growth, suggesting that rising labor costs may continue to contribute to underlying inflationary pressure.**
+**Real wage growth has recovered sharply from deeply negative levels and is converging toward productivity growth, suggesting building demand-side inflationary pressure.**
 
 
 ## Market Signals
@@ -195,7 +216,8 @@ ggplot(df_yield, aes(date,value)) +
 **The inverted yield curve suggests that financial markets anticipate slower economic growth and easing inflation pressures.**
 
 ## Outlook
-While easing energy prices may continue to reduce headline inflation, renewed volatility in oil markets introduces upside risk. Persistent wage growth and elevated core inflation suggest that inflation is likely to decline gradually rather than rapidly. 
+While easing energy prices may continue to reduce headline inflation, renewed volatility in oil markets introduces upside risk. Converging wage and productivity growth, alongside elevated core inflation, suggest inflation is likely to decline gradually rather than rapidly.
+
 Looking ahead, key indicators to monitor include:
 
 - **Energy prices**, particularly oil, given their sensitivity to geopolitical developments  
