@@ -7,12 +7,12 @@ The analysis is structured similarly to a professional economic brief, incorpora
 ## Key Questions
 - Is inflation still elevated relative to historical trends?
 - Are energy prices driving inflation?
-- Is wage growth outpacing productivity (demand pressure)?
+- Are wages converging toward productivity, or does this signal building demand pressure?
 - What is the yield curve signaling about future economic conditions?
 
 ## Key Insights
-- Inflation has moderated by remains above target levels
-- Wage growth exceeding productivity suggests persistent demand-side pressure
+- Inflation has moderated but remains above target levels
+- Wages converging toward productivity levels signal building demand-side inflationary pressure
 - Energy prices contribute to short-term volatility but are not the primary driver
 - The yield curve signals elevated recession risk
 
@@ -39,4 +39,4 @@ The analysis is structured similarly to a professional economic brief, incorpora
 - outputs/figures/ -- visualizations
 
 ## Why this Project Matters
-This project demondstrates the ability to combine data analysis with economic intuition to produce insights similar to professional research reports (e.g., Federal Reserve-style analysis).
+This project demonstrates the ability to combine data analysis with economic intuition to produce insights similar to professional research reports (e.g., Federal Reserve-style analysis).
