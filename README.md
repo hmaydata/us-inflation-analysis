@@ -9,7 +9,7 @@ The analysis is structured similarly to a professional economic brief, incorpora
 
 ## Interactive Dashboard (Power BI)
 
-![Dashboard Preview](images/dashboard.png)
+![Dashboard Preview](outputs/dashboard.png)
 
 An interactive dashboard was built in Power BI to complement the analysis and allow dynamic exploration of inflation drivers.
 
